@@ -7,7 +7,7 @@ import { User } from '../model/user.model';
 @Injectable()
 
 export class UserService {
-
+  
     // colecction
     private _userCollection: AngularFirestoreCollection<User>;
 
@@ -33,9 +33,16 @@ export class UserService {
         return this.users;
     }
 
-    // createUsers(user) {
-    //     return this._af.collection('items').add(user);
-    // }
+    createUsers(user: any): any {
+        console.log('dados: ', user);
+        
+        return this._userCollection.add(user).then(data => {
+            console.log('Documento cadastrado com sucesso!');
+        }).catch(error => {
+            console.error('Erro ao cadastrar o usuário: ', error);
+        });
+
+    }
 
     deleteUsers(key) {
         return this._userCollection.doc(key).delete().then(data => {

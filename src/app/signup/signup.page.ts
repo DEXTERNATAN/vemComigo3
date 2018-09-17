@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NavController, LoadingController } from '@ionic/angular';
 
 import { AlertController } from '@ionic/angular';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { User } from '../model/user.model';
 import { UserService } from '../services/user.service';
@@ -22,9 +22,7 @@ export class SignupPage implements OnInit {
     public formBuilder: FormBuilder,
     public navCtrl: NavController,
     private _userService: UserService,
-    public loadingController: LoadingController,
-    private router: Router,
-    private alertCtrl: AlertController
+    public loadingController: LoadingController
   ) {
     this.signupForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -34,59 +32,12 @@ export class SignupPage implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.getListUsers();
-  }
-
-
-  getListUsers() {
-    this._userService.getUsers().subscribe(data => {
-      this.users = data;
-      // console.log('Dados carregados do banco: ', data);
-      data.forEach(element => {
-          console.log(element);
-      });
-    });
-  }
+  ngOnInit() { }
 
   onSubmit(user): void {
-    // this._userService.createUsers(user);
-    this.navCtrl.navigateRoot('/');
-  }
-
-  async onDelete(key) {
-    console.log('Deletando o item', key);
-    const alert = await this.alertCtrl.create({
-      header: 'Confirmar exclusão?',
-      message: 'Tem certeza de que deseja excluir esta informação?',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'Cancelar',
-          cssClass: 'secondary',
-          handler: (blah) => {
-            console.log('Ação cancelada pelo usuário!');
-          }
-        }, {
-          text: 'OK',
-          handler: () => {
-            this._userService.deleteUsers(key);
-          }
-        }
-      ]
-    });
-  
-    await alert.present();
-  }
-
-
-  onEdit(key) {
-    console.log('Editando o item', key);
-    // this.router.navigate(['/edit/'+key]);
-  }
-
-  createUsers() {
-    console.log('Create Users');
+    console.log('Inserindo um novo registro');
+    this._userService.createUsers(user);
+    // this.navCtrl.navigateRoot('/');
   }
 
 }
